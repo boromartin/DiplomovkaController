@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<a href="http://192.168.1.125">Back</a>
+    <title>POIT Zadanie 2022</title>
+    <style type="text/css">           
+    </style>
+    <script src="static/libs/jquery-1.11.1.min.js"></script>
+    <script src="static/libs/plotly-latest.min.js"></script>
+
+  <script>
+   $(document).ready(function(){
+   const params = new URLSearchParams(location.search);
+   console.log(params.get('emit_value'));
+
+      var layout = {
+          title: 'Temperature',
+          xaxis: {
+            title: 'Timestamp'
+          },
+          yaxis: {
+            title: 'Temperature [C]'
+          }
+        };
+
+      var layout2 = {
+          title: 'Humidity',
+          xaxis: {
+            title: 'Timestamp'
+          },
+          yaxis: {
+            title: 'Humidity [%]'
+          }
+        };
+
+
+
+    $.ajax({
+      type: "POST",
+      url: "/dbdata/" + params.get('emit_value'),
+      success:function(data) 
+      { console.log(data);  
+        data = JSON.parse(data); 
+        n = Object.keys(data).length;
+        console.log(n);   		
+		
+        
+		noOfDevices = 0;
+		JSONData = new Array();
+		
+        for (var i=0; i< n; i++){
+          row = JSON.parse(data[i][1])
+		  console.log(row);
+		  JSONData.push(row)
+		  if (row.position > noOfDevices) {
+		    noOfDevices = row.position;
+		  }		  
+        }
+		
+		console.log(JSONData);
+		
+		
+		SortedTimestamps = new Array(noOfDevices);
+		SortedTemperatures = new Array(noOfDevices);
+		SortedHumidity = new Array(noOfDevices);
+		
+		for(var i = 0;i<noOfDevices;i++){
+            SortedTimestamps[i] = new Array();
+			SortedTemperatures[i] = new Array();
+			SortedHumidity[i] = new Array();
+		}
+		
+		for (var i=0; i< n; i++){
+		  SortedTimestamps[JSONData[i].position -1].push(JSONData[i].timestamp);
+		  SortedTemperatures[JSONData[i].position -1].push(JSONData[i].temperature);
+		  SortedHumidity[JSONData[i].position -1].push(JSONData[i].humidity);
+		}
+		console.log(SortedTimestamps);
+		console.log(SortedTemperatures);
+		console.log(SortedHumidity);
+		
+        
+		
+		//creating temperature traces
+		PlotlyTempTraces = new Array();
+		
+		for(var i = 0;i<noOfDevices;i++){
+          trace = {
+            x: SortedTimestamps[i],
+            y: SortedTemperatures[i]
+			};
+	      PlotlyTempTraces.push(trace);
+		}
+		
+		//creating Humidity traces
+		PlotlyHumidityTraces = new Array();
+		
+		for(var i = 0;i<noOfDevices;i++){
+          trace = {
+            x: SortedTimestamps[i],
+            y: SortedHumidity[i]
+			};
+	      PlotlyHumidityTraces.push(trace);
+		}
+		
+		console.log(PlotlyTempTraces);
+		console.log(PlotlyHumidityTraces);
+
+
+        Plotly.newPlot($('#plotdivTemp')[0], PlotlyTempTraces, layout); 
+        Plotly.newPlot($('#plotdivHumid')[0], PlotlyHumidityTraces, layout2); 		
+      }
+    }).done(function( o ) {
+       
+    });    
+   });   
+
+  </script>
+</head>
+<body>
+    <form id="emit">
+      <input type="text" name="emit_value" id="emit_value" value="1000">
+      <input type="submit" value="Echo">
+    </form>
+
+    <div id="plotdivTemp" style="width:1200px;height:500px;"></div>
+	<div id="plotdivHumid" style="width:1200px;height:500px;"></div>
+      
+</body>
+</html> 

@@ -1,0 +1,108 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+Connected with result code 0
+JSON could not be decoded
+['tele', 'tasmota_4B436B', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'tasmota_FEAD8C', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'tasmota_4B5477', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'tasmota_4B5477_MINIR2', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'MINIR2_tasmota_4B5477', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'MINIR2_tasmota_MINIR2_4B5477', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'tasmota_MINIR2_4B5477', 'LWT']
+Online
+JSON could not be decoded
+['tele', 'tasmota_MINIR2_4B436B', 'LWT']
+Online
+JSON could not be decoded
+['tele', 'DUALR3_tasmota_FEAD8C', 'LWT']
+Offline
+JSON could not be decoded
+['tele', 'tasmota_DUALR3_FEAD8C', 'LWT']
+Online
+100
+110
+111
+0Evaluating 1 Devices
+exception
+('2023-03-12T22:57:07.374307', 'DHT-FC9CF7', 'DHT-', 'DHT-FC9CF7', '192.168.1.118', '192.168.1.1', '255.255.255.0', '(IP unset)', '8C:AA:B5:FC:9C:F7', 'N/A', 'Wemos D1 Mini', 'DHTs', 'Restart')
+001
+011
+111
+1Evaluating 1 Devices
+exception
+('2023-03-12T22:57:07.374307', 'DHT-14791D', 'DHT-', 'DHT-14791D', '192.168.1.126', '192.168.1.1', '255.255.255.0', '(IP unset)', 'E0:98:06:14:79:1D', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+100
+110
+111
+2Evaluating 1 Devices
+exception
+('2023-03-12T22:57:07.374307', 'DHT-FA06AA', 'DHT-', 'DHT-FA06AA', '192.168.1.85', '192.168.1.1', '255.255.255.0', '(IP unset)', '8C:AA:B5:FA:06:AA', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+100
+200
+300
+400
+500
+510
+520
+530
+540
+550
+551
+552
+553
+554
+555
+3Evaluating 5 Devices
+exception
+('2023-03-12T22:57:07.374307', 'tasmota_DUALR3_FEAD8C', 'tasmota_DUALR3_', 'tasmota-DUALR3-FEAD8C-3468', '192.168.1.133', '192.168.1.1', '255.255.255.0', '192.168.1.1', '40:22:D8:FE:AD:8C', '12.4.0(tasmota)', 'ESP32-D0WD-V3 rev.3', 'tasmotas', 'Software reset CPU')
+exception
+('2023-03-12T22:57:07.374307', 'DHT-14791D', 'DHT-', 'DHT-14791D', '192.168.1.126', '192.168.1.1', '255.255.255.0', '(IP unset)', 'E0:98:06:14:79:1D', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+exception
+('2023-03-12T22:57:07.374307', 'DHT-FA06AA', 'DHT-', 'DHT-FA06AA', '192.168.1.85', '192.168.1.1', '255.255.255.0', '(IP unset)', '8C:AA:B5:FA:06:AA', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+('2023-03-12T22:57:07.374307', 'tasmota_MINIR2_4B436B', 'tasmota_MINIR2_', 'tasmota_MINIR2_4B436B-0875', '192.168.1.136', '192.168.1.1', '255.255.255.0', '192.168.1.1', '48:55:19:4B:43:6B', '9.5.0(lite)', 'ESP8285', 'tasmotas', 'Software/System restart')
+('2023-03-12T22:57:07.374307', 'tasmota_MINIR2_4B5477', 'tasmota_MINIR2_', 'tasmota_MINIR2_4B5477-5239', '192.168.1.130', '192.168.1.1', '255.255.255.0', '192.168.1.1', '48:55:19:4B:54:77', '9.5.0(lite)', 'ESP8285', 'tasmotas', 'Software/System restart')
+100
+200
+300
+400
+500
+510
+520
+530
+540
+550
+551
+552
+553
+554
+555
+4Evaluating 5 Devices
+('2023-03-12T22:57:07.374307', 'tasmota_MINIR2_4B5477', 'tasmota_MINIR2_', 'tasmota_MINIR2_4B5477-5239', '192.168.1.130', '192.168.1.1', '255.255.255.0', '192.168.1.1', '48:55:19:4B:54:77', '9.5.0(lite)', 'ESP8285', 'tasmotas', 'Software/System restart')
+('2023-03-12T22:57:07.374307', 'tasmota_MINIR2_4B436B', 'tasmota_MINIR2_', 'tasmota_MINIR2_4B436B-0875', '192.168.1.136', '192.168.1.1', '255.255.255.0', '192.168.1.1', '48:55:19:4B:43:6B', '9.5.0(lite)', 'ESP8285', 'tasmotas', 'Software/System restart')
+exception
+('2023-03-12T22:57:07.374307', 'tasmota_DUALR3_FEAD8C', 'tasmota_DUALR3_', 'tasmota-DUALR3-FEAD8C-3468', '192.168.1.133', '192.168.1.1', '255.255.255.0', '192.168.1.1', '40:22:D8:FE:AD:8C', '12.4.0(tasmota)', 'ESP32-D0WD-V3 rev.3', 'tasmotas', 'Software reset CPU')
+exception
+('2023-03-12T22:57:07.374307', 'DHT-14791D', 'DHT-', 'DHT-14791D', '192.168.1.126', '192.168.1.1', '255.255.255.0', '(IP unset)', 'E0:98:06:14:79:1D', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+exception
+('2023-03-12T22:57:07.374307', 'DHT-FA06AA', 'DHT-', 'DHT-FA06AA', '192.168.1.85', '192.168.1.1', '255.255.255.0', '(IP unset)', '8C:AA:B5:FA:06:AA', 'AsyncMQTT v1.0', 'Wemos D1 Mini', 'DHTs', 'Restart')
+100
+200
+300
+400
+500
+510
+520
+530
+540
