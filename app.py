@@ -53,7 +53,7 @@ DataTableNames = {
 # MQTT emit formatted data
 
 
-def retransmitFormattedData(topic, message):
+def retransmitFormattedData(message):
     global deviceTemplates, deviceStatus, onlineDevices
     global DeviceValidityCheck
 
@@ -86,14 +86,16 @@ def on_connect(client, userdata, flags, rc):
 
 def evalStatusFeedbackMessages(Topics, Message):
     Value = Topics[2].replace("POWER", "Relay1")
-    if (Message == "ON"):
-        print("Setting " + Topics[2] + "to 1")
-        onlineDevices[Topics[1][-6:]]["Data"][Value] = 1
-        
-    if (Message == "OFF"):
-        print("Setting " + Topics[2] + "to 0")
-        onlineDevices[Topics[1][-6:]]["Data"][Value] = 0
-        
+    try:
+        if (Message == "ON"):
+            print("Setting " + Topics[2] + "to 1")
+            onlineDevices[Topics[1][-6:]]["Data"][Value] = 1
+            
+        if (Message == "OFF"):
+            print("Setting " + Topics[2] + "to 0")
+            onlineDevices[Topics[1][-6:]]["Data"][Value] = 0
+    except:
+        print("Zariadenie neexistuje")        
     print(Message)
 
 def on_message(client, userdata, msg):
@@ -134,7 +136,7 @@ def on_message(client, userdata, msg):
                 "Data": retransmitJSONData
             }
 
-            retransmitFormattedData("data/"+Topics[1], retransmitJSON)
+            retransmitFormattedData(retransmitJSON)
             return
 
         # Sonoff Mini R2
@@ -175,7 +177,7 @@ def on_message(client, userdata, msg):
                         "Data": retransmitJSONData
                     }
 
-                    retransmitFormattedData("data/"+Topics[1], retransmitJSON)
+                    retransmitFormattedData(retransmitJSON)
                     return
 
         # Sonoff DualR3
@@ -239,7 +241,7 @@ def on_message(client, userdata, msg):
                         "DataTableName": "SONOFF_DUALR3_STATUS",
                         "Data": retransmitJSONData
                     }
-                    retransmitFormattedData("data/"+Topics[1], retransmitJSON)
+                    retransmitFormattedData(retransmitJSON)
                     return
 
         # Sonoff POW316
@@ -283,7 +285,7 @@ def on_message(client, userdata, msg):
                         "Data": retransmitJSONData
                     }
 
-                    retransmitFormattedData("data/"+Topics[1], retransmitJSON)
+                    retransmitFormattedData(retransmitJSON)
                     return
 
     elif (Topics[0] == "stat"):
@@ -296,31 +298,31 @@ def evalStatusMessages(Topics, DataJSON, topic):
 
     DID = Topics[1][-6:]
 
-    Status["DeviceID"] = DID
-    Status["Time"] = today.isoformat()
-    Status["ControlTopic"] = "cmnd/" + Topics[1]
+    Status[DID]["DeviceID"] = DID
+    Status[DID]["Time"] = today.isoformat()
+    Status[DID]["ControlTopic"] = "cmnd/" + Topics[1]
 
     if (Topics[2] == "STATUS5"):
-        StatusNET["Hostname"] = DataJSON["StatusNET"]["Hostname"]
-        StatusNET["IPAddress"] = DataJSON["StatusNET"]["IPAddress"]
-        StatusNET["Gateway"] = DataJSON["StatusNET"]["Gateway"]
-        StatusNET["Subnetmask"] = DataJSON["StatusNET"]["Subnetmask"]
-        StatusNET["Mac"] = DataJSON["StatusNET"]["Mac"]
+        StatusNET[DID]["Hostname"] = DataJSON["StatusNET"]["Hostname"]
+        StatusNET[DID]["IPAddress"] = DataJSON["StatusNET"]["IPAddress"]
+        StatusNET[DID]["Gateway"] = DataJSON["StatusNET"]["Gateway"]
+        StatusNET[DID]["Subnetmask"] = DataJSON["StatusNET"]["Subnetmask"]
+        StatusNET[DID]["Mac"] = DataJSON["StatusNET"]["Mac"]
 
     elif (Topics[2] == "STATUS2"):
-        StatusFWR["Version"] = DataJSON["StatusFWR"]["Version"]
-        StatusFWR["Hardware"] = DataJSON["StatusFWR"]["Hardware"]
+        StatusFWR[DID]["Version"] = DataJSON["StatusFWR"]["Version"]
+        StatusFWR[DID]["Hardware"] = DataJSON["StatusFWR"]["Hardware"]
 
     elif (Topics[2] == "STATUS1"):
-        StatusPRM["GroupTopic"] = DataJSON["StatusPRM"]["GroupTopic"]
-        StatusPRM["StartupUTC"] = DataJSON["StatusPRM"]["StartupUTC"]
-        StatusPRM["RestartReason"] = DataJSON["StatusPRM"]["RestartReason"]
+        StatusPRM[DID]["GroupTopic"] = DataJSON["StatusPRM"]["GroupTopic"]
+        StatusPRM[DID]["StartupUTC"] = DataJSON["StatusPRM"]["StartupUTC"]
+        StatusPRM[DID]["RestartReason"] = DataJSON["StatusPRM"]["RestartReason"]
 
     try:
         deviceStatus[DID] = Status
-        deviceStatus[DID]["StatusNET"] = StatusNET
-        deviceStatus[DID]["StatusFWR"] = StatusFWR
-        deviceStatus[DID]["StatusPRM"] = StatusPRM
+        deviceStatus[DID]["StatusNET"] = StatusNET[DID]
+        deviceStatus[DID]["StatusFWR"] = StatusFWR[DID]
+        deviceStatus[DID]["StatusPRM"] = StatusPRM[DID]
     except:
         print("Insufficient data")
 
@@ -358,7 +360,7 @@ def background_device_monitor():
         client.publish("cmnd/tasmotas/STATUS", 5)
         client.publish("cmnd/DHTs/STATUS", 5)
 
-        time.sleep(52)
+        time.sleep(54)
 
 
 def on_disconnect():
@@ -369,7 +371,7 @@ def background_thread():
 
     count = 0
 
-    client.connect("192.168.1.63", 1884)
+    client.connect("192.168.1.63", 188)
 
     client.on_connect = on_connect
     client.on_message = on_message
