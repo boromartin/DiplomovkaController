@@ -28,7 +28,7 @@ SQLWriterThread = None
 
 client = mqtt.Client("Python")
 
-SQLHost = "192.168.1.254"
+SQLHost = "db"
 SQLUser = "mqttapi"
 SQLPasswd = "5cRtB2LQ4Ttxne"
 SQLDB = "SmartRoomData"
