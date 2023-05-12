@@ -15,7 +15,7 @@ import math
 
 counter = 0
 DataUpdatePeriod = 3
-SQLUpdatePeriod = 300
+SQLUpdatePeriod = 3
 
 DeviceValidityCheck = False
 
@@ -28,9 +28,9 @@ SQLWriterThread = None
 
 client = mqtt.Client("Python")
 
-SQLHost = "192.168.1.10"
-SQLUser = "root"
-SQLPasswd = "123456"
+SQLHost = "192.168.1.254"
+SQLUser = "mqttapi"
+SQLPasswd = "5cRtB2LQ4Ttxne"
 SQLDB = "SmartRoomData"
 
 today = datetime.now()
@@ -60,13 +60,16 @@ def retransmitFormattedData(message):
     try:
         message["Template"] = json.loads(
             deviceTemplates[message["DeviceType"]])
+        
     except:
+        print("Template Missing")
         DeviceValidityCheck = False
         return
 
     try:
         message["DeviceInfo"] = deviceStatus[message["DeviceID"]]
     except:
+        print("Device data missing")
         DeviceValidityCheck = False
         return
 
@@ -294,29 +297,31 @@ def on_message(client, userdata, msg):
 
 def evalStatusMessages(Topics, DataJSON, topic):
     global Status, StatusNET, StatusPRM, StatusFWR
+    
+
     today = datetime.now()
 
     DID = Topics[1][-6:]
 
-    Status[DID]["DeviceID"] = DID
-    Status[DID]["Time"] = today.isoformat()
-    Status[DID]["ControlTopic"] = "cmnd/" + Topics[1]
+    Status["DeviceID"] = DID
+    Status["Time"] = today.isoformat()
+    Status["ControlTopic"] = "cmnd/" + Topics[1]
 
     if (Topics[2] == "STATUS5"):
-        StatusNET[DID]["Hostname"] = DataJSON["StatusNET"]["Hostname"]
-        StatusNET[DID]["IPAddress"] = DataJSON["StatusNET"]["IPAddress"]
-        StatusNET[DID]["Gateway"] = DataJSON["StatusNET"]["Gateway"]
-        StatusNET[DID]["Subnetmask"] = DataJSON["StatusNET"]["Subnetmask"]
-        StatusNET[DID]["Mac"] = DataJSON["StatusNET"]["Mac"]
+        StatusNET["Hostname"] = DataJSON["StatusNET"]["Hostname"]
+        StatusNET["IPAddress"] = DataJSON["StatusNET"]["IPAddress"]
+        StatusNET["Gateway"] = DataJSON["StatusNET"]["Gateway"]
+        StatusNET["Subnetmask"] = DataJSON["StatusNET"]["Subnetmask"]
+        StatusNET["Mac"] = DataJSON["StatusNET"]["Mac"]
 
     elif (Topics[2] == "STATUS2"):
-        StatusFWR[DID]["Version"] = DataJSON["StatusFWR"]["Version"]
-        StatusFWR[DID]["Hardware"] = DataJSON["StatusFWR"]["Hardware"]
+        StatusFWR["Version"] = DataJSON["StatusFWR"]["Version"]
+        StatusFWR["Hardware"] = DataJSON["StatusFWR"]["Hardware"]
 
     elif (Topics[2] == "STATUS1"):
-        StatusPRM[DID]["GroupTopic"] = DataJSON["StatusPRM"]["GroupTopic"]
-        StatusPRM[DID]["StartupUTC"] = DataJSON["StatusPRM"]["StartupUTC"]
-        StatusPRM[DID]["RestartReason"] = DataJSON["StatusPRM"]["RestartReason"]
+        StatusPRM["GroupTopic"] = DataJSON["StatusPRM"]["GroupTopic"]
+        StatusPRM["StartupUTC"] = DataJSON["StatusPRM"]["StartupUTC"]
+        StatusPRM["RestartReason"] = DataJSON["StatusPRM"]["RestartReason"]
 
     try:
         deviceStatus[DID] = Status
@@ -371,7 +376,7 @@ def background_thread():
 
     count = 0
 
-    client.connect("192.168.1.63", 188)
+    client.connect("192.168.1.254", 1883)
 
     client.on_connect = on_connect
     client.on_message = on_message
@@ -482,7 +487,7 @@ def generate_POW316_SQL_Query(device):
     TIME = device["Time"]
     DN = device["DeviceName"]
     DID = device["DeviceID"]
-    Relay1 = device["Data"]["Power"]
+    Relay1 = device["Data"]["Relay1"]
     PowerUsedTotal = device["Data"]["PowerUsedTotal"]	
     PowerUsedToday = device["Data"]["PowerUsedToday"]
     Period = device["Data"]["Period"]
